@@ -6,6 +6,9 @@ type Config struct {
 		Port                 string
 		VAPIDPubliKey        string
 		VAPIDPrivateKey      string
+		SecretJWT            string
+		EncryptionKey        string
+		HmacKey              string
 	}
 
 	Database struct {
