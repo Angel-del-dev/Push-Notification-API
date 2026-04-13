@@ -13,6 +13,7 @@ import (
 	"notificationapi.com/internal/config"
 	"notificationapi.com/internal/domains/auth"
 	"notificationapi.com/internal/domains/notifications"
+	"notificationapi.com/internal/domains/users"
 	"notificationapi.com/internal/infrastructure/database"
 	"notificationapi.com/internal/infrastructure/domaincreator"
 	"notificationapi.com/internal/middlewares"
@@ -89,6 +90,7 @@ func (r *Router) setRateLimiter() {
 func (r *Router) createRouter() {
 	r.setAuthRoutes()
 	r.setWebPushRoutes()
+	r.setUserRoutes()
 }
 
 func (r *Router) setWebPushRoutes() {
@@ -123,4 +125,18 @@ func (r *Router) setAuthRoutes() {
 		middlewares.ContentTypeAllowed("application/json"),
 		service.Login,
 	)
+}
+
+func (r *Router) setUserRoutes() {
+	repository := domaincreator.Create[users.Repository]()
+	repository.DB = r.db
+
+	service := domaincreator.Create[users.Service]()
+	service.Repository = *repository
+	usersGroup := r.app.Group("/users",
+		middlewares.ContentTypeAllowed("application/json"),
+		middlewares.JWTMiddleware([]byte(r.configuration.Application.SecretJWT)),
+	)
+	usersGroup.Post("/", service.Store)
+	usersGroup.Delete("/", service.Remove)
 }
