@@ -96,7 +96,7 @@ Creates a new user and links it to an application, **Required** for sending noti
 
 *   **Method:** `POST`
 *   **Route:** `/users`
-*   **Middleware:** JWT Middleware (`SecretJWT`) y Content Type JSON.
+*   **Middleware:** JWT Middleware (`SecretJWT`), Content Type JSON.
 *   **Request body:**
     ```json
     {
@@ -113,7 +113,7 @@ Unlinks and removes a user from an application.
 
 *   **Method:** `DELETE`
 *   **Route:** `/users`
-*   **Middleware:** JWT Middleware (`SecretJWT`) y Content Type JSON.
+*   **Middleware:** JWT Middleware (`SecretJWT`), Content Type JSON.
 *   **Request body:**
     ```json
     {
